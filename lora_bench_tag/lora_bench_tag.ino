@@ -6,7 +6,7 @@
 // Seated=grounded=intact(LOW). Pulled=torn/active(HIGH). Grounds -> b62/i62 (confirmed GND).
 
 
-const uint8_t  DEACT_PIN      = 48;   // i49 — pull -> tag_status inactive
+const uint8_t  DEACT_PIN      = 43;   // i57 — pull -> tag_status inactive
 const uint8_t  TRANSPORT_PIN  = 47;   // i50 — pull -> disposition transported
 
 // First NUM_STRIPS entries are the triage strips; the two control pins follow.
