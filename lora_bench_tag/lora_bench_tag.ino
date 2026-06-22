@@ -18,7 +18,8 @@ const uint32_t DEBOUNCE_MS  = 50;
 #define TAG_AUTO    0
 #define TAG_NUMBER  TAG_AUTO
 
-char tagLabel[8];   // formatted tag id, e.g. "0001" (manual) or "8F3A" (auto)
+char     tagLabel[8];   // formatted tag id, 6 hex digits (auto) or 6-digit (manual)
+uint64_t deviceMac = 0; // full 48-bit factory MAC
 
 
 int      stableState[NUM_STRIPS];
@@ -28,11 +29,12 @@ int      lastReportedCount = -1;
 
 
 void initTagId() {
+ deviceMac = ESP.getEfuseMac();   // 48-bit factory MAC
  if (TAG_NUMBER != TAG_AUTO) {
-   snprintf(tagLabel, sizeof(tagLabel), "%04u", (unsigned)TAG_NUMBER);
+   snprintf(tagLabel, sizeof(tagLabel), "%06u", (unsigned)TAG_NUMBER);
  } else {
-   uint16_t id = (uint16_t)(ESP.getEfuseMac() & 0xFFFF);  // low 2 bytes of MAC
-   snprintf(tagLabel, sizeof(tagLabel), "%04X", id);
+   uint32_t id = (uint32_t)(deviceMac & 0xFFFFFF);  // low 3 bytes of MAC
+   snprintf(tagLabel, sizeof(tagLabel), "%06X", id);
  }
 }
 
@@ -60,6 +62,10 @@ void setup() {
  }
  initTagId();
  Serial.println(F("tear-strip 4-strip acuity test"));
+ char macStr[16];
+ snprintf(macStr, sizeof(macStr), "%012llX", (unsigned long long)deviceMac);
+ Serial.print(F("MAC: "));
+ Serial.println(macStr);
  Serial.print(F("Tag: "));
  Serial.println(tagLabel);
  Serial.println(F("torn count -> acuity colour"));
