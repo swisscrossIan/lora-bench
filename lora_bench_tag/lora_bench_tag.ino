@@ -11,15 +11,10 @@ const uint32_t DEBOUNCE_MS  = 50;
 
 
 // ---- Tag identity ----------------------------------------------------------
-// Each tag prints its own number so the receiver can tell devices apart.
-// Set TAG_NUMBER to a fixed value (1, 2, 3, ...) to hand-assign human-friendly
-// numbers per device. Leave it as TAG_AUTO to derive a stable, unique number
-// from the ESP32's factory-programmed MAC (no per-device edits needed).
-#define TAG_AUTO    0
-#define TAG_NUMBER  TAG_AUTO
-
-char     tagLabel[8];   // formatted tag id, 6 hex digits (auto) or 6-digit (manual)
-uint64_t deviceMac = 0; // full 48-bit factory MAC
+// The tag id is the ESP32's full 48-bit factory MAC (12 hex digits). It is
+// globally unique with no per-device config; a human-friendly name is mapped
+// to this id in the database.
+char tagLabel[16];   // full MAC, 12 hex digits + null
 
 
 int      stableState[NUM_STRIPS];
@@ -29,13 +24,8 @@ int      lastReportedCount = -1;
 
 
 void initTagId() {
- deviceMac = ESP.getEfuseMac();   // 48-bit factory MAC
- if (TAG_NUMBER != TAG_AUTO) {
-   snprintf(tagLabel, sizeof(tagLabel), "%06u", (unsigned)TAG_NUMBER);
- } else {
-   uint32_t id = (uint32_t)(deviceMac & 0xFFFFFF);  // low 3 bytes of MAC
-   snprintf(tagLabel, sizeof(tagLabel), "%06X", id);
- }
+ snprintf(tagLabel, sizeof(tagLabel), "%012llX",
+          (unsigned long long)ESP.getEfuseMac());  // full 48-bit factory MAC
 }
 
 
@@ -62,10 +52,6 @@ void setup() {
  }
  initTagId();
  Serial.println(F("tear-strip 4-strip acuity test"));
- char macStr[16];
- snprintf(macStr, sizeof(macStr), "%012llX", (unsigned long long)deviceMac);
- Serial.print(F("MAC: "));
- Serial.println(macStr);
  Serial.print(F("Tag: "));
  Serial.println(tagLabel);
  Serial.println(F("torn count -> acuity colour"));

@@ -30,22 +30,17 @@ Notes from bring-up:
 
 ## Tag identity
 
-Each tag prints its own number so the receiver can tell devices apart. The full
-48-bit factory MAC is printed once at startup, and the tag id leads every line:
+The tag id is the ESP32's full 48-bit factory **MAC** (12 hex digits). It is
+globally unique with no per-device configuration, and leads every line:
 
 ```
-MAC: A0B1C2D3E4F5
-Tag: D3E4F5
+Tag: A0B1C2D3E4F5
 ...
-Tag: D3E4F5  torn=2  level=2  ACTIVATED - YELLOW
+Tag: A0B1C2D3E4F5  torn=2  level=2  ACTIVATED - YELLOW
 ```
 
-The number is controlled by the `TAG_NUMBER` define:
-
-- `TAG_AUTO` (default) — derives a stable, unique 6-hex-digit id from the low 3
-  bytes of the ESP32's factory-programmed MAC. No per-device editing needed.
-- A fixed value (e.g. `#define TAG_NUMBER 1`) — hand-assigns a human-friendly
-  6-digit zero-padded number (`Tag: 000001`); set it before flashing each device.
+A human-friendly name is mapped to this id in the database rather than on the
+device.
 
 ## Behaviour
 
