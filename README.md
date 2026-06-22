@@ -28,6 +28,21 @@ Notes from bring-up:
 - GPIO5 (b47) is shorted and b48 is intermittent — both avoided.
 - Grounds land on **b62 / i62** (confirmed GND).
 
+## Tag identity
+
+Each tag prints its own number so the receiver can tell devices apart, e.g.:
+
+```
+Tag: 8F3A  torn=2  level=2  ACTIVATED - YELLOW
+```
+
+The number is controlled by the `TAG_NUMBER` define:
+
+- `TAG_AUTO` (default) — derives a stable, unique 4-hex-digit id from the
+  ESP32's factory-programmed MAC. No per-device editing needed.
+- A fixed value (e.g. `#define TAG_NUMBER 1`) — hand-assigns a human-friendly
+  zero-padded number (`Tag: 0001`); set it before flashing each device.
+
 ## Behaviour
 
 - Strip **seated = grounded = intact** → reads `LOW`.

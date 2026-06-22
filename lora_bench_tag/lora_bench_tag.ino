@@ -10,10 +10,31 @@ const uint8_t  NUM_STRIPS   = sizeof(STRIP_PINS) / sizeof(STRIP_PINS[0]);
 const uint32_t DEBOUNCE_MS  = 50;
 
 
+// ---- Tag identity ----------------------------------------------------------
+// Each tag prints its own number so the receiver can tell devices apart.
+// Set TAG_NUMBER to a fixed value (1, 2, 3, ...) to hand-assign human-friendly
+// numbers per device. Leave it as TAG_AUTO to derive a stable, unique number
+// from the ESP32's factory-programmed MAC (no per-device edits needed).
+#define TAG_AUTO    0
+#define TAG_NUMBER  TAG_AUTO
+
+char tagLabel[8];   // formatted tag id, e.g. "0001" (manual) or "8F3A" (auto)
+
+
 int      stableState[NUM_STRIPS];
 int      lastRead[NUM_STRIPS];
 uint32_t lastEdgeMs[NUM_STRIPS];
 int      lastReportedCount = -1;
+
+
+void initTagId() {
+ if (TAG_NUMBER != TAG_AUTO) {
+   snprintf(tagLabel, sizeof(tagLabel), "%04u", (unsigned)TAG_NUMBER);
+ } else {
+   uint16_t id = (uint16_t)(ESP.getEfuseMac() & 0xFFFF);  // low 2 bytes of MAC
+   snprintf(tagLabel, sizeof(tagLabel), "%04X", id);
+ }
+}
 
 
 const char* levelName(int t) {
@@ -37,7 +58,10 @@ void setup() {
    lastRead[i]    = -1;
    lastEdgeMs[i]  = 0;
  }
+ initTagId();
  Serial.println(F("tear-strip 4-strip acuity test"));
+ Serial.print(F("Tag: "));
+ Serial.println(tagLabel);
  Serial.println(F("torn count -> acuity colour"));
 }
 
@@ -63,7 +87,9 @@ void loop() {
 
  if (torn != lastReportedCount) {
    lastReportedCount = torn;
-   Serial.print(F("torn="));
+   Serial.print(F("Tag: "));
+   Serial.print(tagLabel);
+   Serial.print(F("  torn="));
    Serial.print(torn);
    Serial.print(F("  level="));
    Serial.print(torn);
