@@ -23,8 +23,8 @@ Notes from bring-up:
 
 - Original strip 3 (b53 = GPIO39) and strip 4 (b52 = GPIO38) were the intended
   RED/BLACK pins. The active sketch uses verified-good pins `{42, 41, 1, 38}`.
-- **GPIO1 (b51)** was intended to be left free for battery monitoring; it is
-  currently used as strip 3 in this build.
+- **GPIO1 (b51)** is used as strip 3 due to pin malfunctions, but should be
+  left open for battery monitoring in a future build.
 - GPIO5 (b47) is shorted and b48 is intermittent — both avoided.
 - Grounds land on **b62 / i62** (confirmed GND).
 
