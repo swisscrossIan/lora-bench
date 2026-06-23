@@ -54,17 +54,8 @@ const char* triageStatus(int level) {
 }
 
 
-// One record = snake_case key: value lines, blank-line delimited for the API push.
-void printStatus(int torn, bool active, bool transported) {
- Serial.print(F("tag: "));           Serial.println(tag_id);
- Serial.println(F("type: medical"));
- Serial.print(F("torn: "));          Serial.println(torn);
- Serial.print(F("level: "));         Serial.println(torn);
- Serial.print(F("tag_status: "));    Serial.println(active ? F("active") : F("inactive"));
- Serial.print(F("triage_status: ")); Serial.println(triageStatus(torn));
- Serial.print(F("disposition: "));   Serial.println(transported ? F("transported") : F("on_scene"));
- Serial.println();   // blank line delimits each record
-}
+// The transmitted record is now a JSON payload built in payload.ino
+// (buildPayload). triageStatus() above feeds its triage_status field.
 
 
 void setup() {
@@ -77,6 +68,7 @@ void setup() {
    lastEdgeMs[i]  = 0;
  }
  initTagId();
+ qrInit();   // OLED QR — defined in qr_display.ino (same sketch)
 }
 
 
@@ -109,6 +101,7 @@ void loop() {
    lastTorn        = torn;
    lastActive      = active;
    lastTransported = transported;
-   printStatus(torn, active, transported);
+   Serial.println(buildPayload(torn, active, transported));   // JSON record (payload.ino)
+   if (active) qrShowMac(); else qrClear();                   // QR of the MAC on activation
  }
 }
