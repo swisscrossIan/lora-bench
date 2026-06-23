@@ -5,7 +5,7 @@
 // (triageStatus) with lora_bench_tag.ino.
 //
 // REQUIRED LIBRARY (Arduino IDE -> Library Manager):
-//   - "ArduinoJson" by Benoit Blanchon (v6.x)
+//   - "ArduinoJson" by Benoit Blanchon (current version, v7)
 //
 // NULL-WHEN-ABSENT CONTRACT
 // Any optional source that is missing, or that can't return data, is emitted as
@@ -36,7 +36,7 @@ const char* nfcPayload = nullptr;
 
 
 String buildPayload(int torn, bool active, bool transported) {
-  StaticJsonDocument<512> doc;
+  JsonDocument doc;
 
   doc["tag_id"]        = tag_id;                            // device MAC (12 hex)
   doc["seq"]           = seq++;
