@@ -68,6 +68,7 @@ void setup() {
    lastEdgeMs[i]  = 0;
  }
  initTagId();
+ qrInit();   // OLED QR — defined in qr_display.ino (same sketch)
 }
 
 
@@ -101,5 +102,6 @@ void loop() {
    lastActive      = active;
    lastTransported = transported;
    Serial.println(buildPayload(torn, active, transported));   // JSON record (payload.ino)
+   if (active) qrShowMac(); else qrClear();                   // QR of the MAC on activation
  }
 }
