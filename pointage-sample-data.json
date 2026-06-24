@@ -1,0 +1,69 @@
+{
+  "_comment": "Sample MCI in progress for rendering the Pointage C2 dashboard mockup. One incident, multiple agencies, realistic acuity mix and device health. 'tags' is current state (latest event per tag). 'events' is the append-only history used by the tag timeline. 'alerts' feeds the priority rail. Coordinates are clustered around a single scene near Cambridge, Ontario so the map zooms to one site.",
+
+  "incident": {
+    "id": "INC-2026-0624-01",
+    "name": "Structure Collapse — Market Hall",
+    "status": "active",
+    "declared_at": "2026-06-24T14:00:00Z",
+    "last_update": "2026-06-24T14:34:52Z",
+    "site_center": { "lat": 43.3601, "lng": -80.3127 },
+    "commander": "IC-3 Vasquez",
+    "totals": { "immediate": 4, "delayed": 6, "minor": 9, "expectant": 3, "total": 22 }
+  },
+
+  "gateways": [
+    { "id": "GW-1", "label": "Command Post", "status": "ok", "last_seen": "2026-06-24T14:34:50Z", "rssi_floor": -119, "tags_heard": 22 },
+    { "id": "GW-2", "label": "North Stack", "status": "degraded", "last_seen": "2026-06-24T14:33:10Z", "rssi_floor": -121, "tags_heard": 14 }
+  ],
+
+  "tags": [
+    { "tag_id": "SWX-0142", "agency": "SWX", "acuity": "immediate", "lat": 43.36052, "lng": -80.31188, "battery_pct": 84, "rssi": -97, "seq": 9, "lifecycle": "active", "first_seen": "2026-06-24T14:03:11Z", "last_seen": "2026-06-24T14:34:41Z" },
+    { "tag_id": "SWX-0150", "agency": "SWX", "acuity": "immediate", "lat": 43.35981, "lng": -80.31322, "battery_pct": 76, "rssi": -104, "seq": 12, "lifecycle": "active", "first_seen": "2026-06-24T14:04:02Z", "last_seen": "2026-06-24T14:34:30Z" },
+    { "tag_id": "RWM-0007", "agency": "RWM", "acuity": "immediate", "lat": 43.36110, "lng": -80.31251, "battery_pct": 61, "rssi": -112, "seq": 6, "lifecycle": "active", "first_seen": "2026-06-24T14:07:55Z", "last_seen": "2026-06-24T14:33:58Z" },
+    { "tag_id": "SWX-0163", "agency": "SWX", "acuity": "immediate", "lat": 43.36028, "lng": -80.31402, "battery_pct": 88, "rssi": -91, "seq": 4, "lifecycle": "active", "first_seen": "2026-06-24T14:18:20Z", "last_seen": "2026-06-24T14:34:12Z" },
+
+    { "tag_id": "SWX-0144", "agency": "SWX", "acuity": "delayed", "lat": 43.36071, "lng": -80.31230, "battery_pct": 92, "rssi": -88, "seq": 7, "lifecycle": "active", "first_seen": "2026-06-24T14:03:40Z", "last_seen": "2026-06-24T14:34:35Z" },
+    { "tag_id": "SWX-0146", "agency": "SWX", "acuity": "delayed", "lat": 43.35995, "lng": -80.31159, "battery_pct": 79, "rssi": -99, "seq": 8, "lifecycle": "active", "first_seen": "2026-06-24T14:05:18Z", "last_seen": "2026-06-24T14:34:20Z" },
+    { "tag_id": "RWM-0011", "agency": "RWM", "acuity": "delayed", "lat": 43.36133, "lng": -80.31360, "battery_pct": 70, "rssi": -108, "seq": 5, "lifecycle": "active", "first_seen": "2026-06-24T14:09:44Z", "last_seen": "2026-06-24T14:33:41Z" },
+    { "tag_id": "SWX-0158", "agency": "SWX", "acuity": "delayed", "lat": 43.36009, "lng": -80.31298, "battery_pct": 95, "rssi": -85, "seq": 6, "lifecycle": "active", "first_seen": "2026-06-24T14:12:03Z", "last_seen": "2026-06-24T14:34:08Z" },
+    { "tag_id": "RWM-0014", "agency": "RWM", "acuity": "delayed", "lat": 43.36088, "lng": -80.31419, "battery_pct": 64, "rssi": -110, "seq": 3, "lifecycle": "stale", "first_seen": "2026-06-24T14:15:30Z", "last_seen": "2026-06-24T14:28:55Z" },
+    { "tag_id": "SWX-0171", "agency": "SWX", "acuity": "delayed", "lat": 43.35962, "lng": -80.31244, "battery_pct": 90, "rssi": -93, "seq": 2, "lifecycle": "active", "first_seen": "2026-06-24T14:22:11Z", "last_seen": "2026-06-24T14:34:02Z" },
+
+    { "tag_id": "SWX-0143", "agency": "SWX", "acuity": "minor", "lat": 43.36120, "lng": -80.31180, "battery_pct": 97, "rssi": -82, "seq": 5, "lifecycle": "active", "first_seen": "2026-06-24T14:03:25Z", "last_seen": "2026-06-24T14:34:44Z" },
+    { "tag_id": "SWX-0145", "agency": "SWX", "acuity": "minor", "lat": 43.36140, "lng": -80.31205, "battery_pct": 93, "rssi": -86, "seq": 4, "lifecycle": "active", "first_seen": "2026-06-24T14:04:50Z", "last_seen": "2026-06-24T14:34:39Z" },
+    { "tag_id": "SWX-0147", "agency": "SWX", "acuity": "minor", "lat": 43.36155, "lng": -80.31170, "battery_pct": 99, "rssi": -80, "seq": 3, "lifecycle": "active", "first_seen": "2026-06-24T14:05:33Z", "last_seen": "2026-06-24T14:34:33Z" },
+    { "tag_id": "RWM-0009", "agency": "RWM", "acuity": "minor", "lat": 43.36129, "lng": -80.31142, "battery_pct": 72, "rssi": -101, "seq": 4, "lifecycle": "active", "first_seen": "2026-06-24T14:08:12Z", "last_seen": "2026-06-24T14:34:01Z" },
+    { "tag_id": "SWX-0152", "agency": "SWX", "acuity": "minor", "lat": 43.36165, "lng": -80.31221, "battery_pct": 91, "rssi": -89, "seq": 3, "lifecycle": "active", "first_seen": "2026-06-24T14:10:40Z", "last_seen": "2026-06-24T14:33:50Z" },
+    { "tag_id": "SWX-0155", "agency": "SWX", "acuity": "minor", "lat": 43.36148, "lng": -80.31255, "battery_pct": 88, "rssi": -90, "seq": 2, "lifecycle": "active", "first_seen": "2026-06-24T14:13:27Z", "last_seen": "2026-06-24T14:34:18Z" },
+    { "tag_id": "RWM-0016", "agency": "RWM", "acuity": "minor", "lat": 43.36172, "lng": -80.31198, "battery_pct": 68, "rssi": -106, "seq": 2, "lifecycle": "active", "first_seen": "2026-06-24T14:17:09Z", "last_seen": "2026-06-24T14:33:33Z" },
+    { "tag_id": "SWX-0168", "agency": "SWX", "acuity": "minor", "lat": 43.36137, "lng": -80.31280, "battery_pct": 94, "rssi": -84, "seq": 2, "lifecycle": "active", "first_seen": "2026-06-24T14:20:55Z", "last_seen": "2026-06-24T14:34:25Z" },
+    { "tag_id": "SWX-0174", "agency": "SWX", "acuity": "minor", "lat": 43.36158, "lng": -80.31300, "battery_pct": 96, "rssi": -83, "seq": 1, "lifecycle": "active", "first_seen": "2026-06-24T14:26:40Z", "last_seen": "2026-06-24T14:34:09Z" },
+
+    { "tag_id": "SWX-0149", "agency": "SWX", "acuity": "expectant", "lat": 43.35949, "lng": -80.31355, "battery_pct": 81, "rssi": -100, "seq": 3, "lifecycle": "active", "first_seen": "2026-06-24T14:06:10Z", "last_seen": "2026-06-24T14:33:20Z" },
+    { "tag_id": "SWX-0160", "agency": "SWX", "acuity": "expectant", "lat": 43.35970, "lng": -80.31390, "battery_pct": 77, "rssi": -103, "seq": 2, "lifecycle": "active", "first_seen": "2026-06-24T14:14:48Z", "last_seen": "2026-06-24T14:32:55Z" },
+    { "tag_id": "RWM-0019", "agency": "RWM", "acuity": "expectant", "lat": 43.35938, "lng": -80.31318, "battery_pct": 59, "rssi": -114, "seq": 2, "lifecycle": "stale", "first_seen": "2026-06-24T14:19:30Z", "last_seen": "2026-06-24T14:27:40Z" }
+  ],
+
+  "events": [
+    { "tag_id": "SWX-0150", "seq": 8, "acuity": "delayed", "lat": 43.35983, "lng": -80.31320, "battery_pct": 78, "rssi": -102, "ts": "2026-06-24T14:21:05Z" },
+    { "tag_id": "SWX-0150", "seq": 10, "acuity": "delayed", "lat": 43.35982, "lng": -80.31321, "battery_pct": 77, "rssi": -103, "ts": "2026-06-24T14:27:40Z" },
+    { "tag_id": "SWX-0150", "seq": 12, "acuity": "immediate", "lat": 43.35981, "lng": -80.31322, "battery_pct": 76, "rssi": -104, "ts": "2026-06-24T14:34:30Z" },
+
+    { "tag_id": "RWM-0007", "seq": 4, "acuity": "delayed", "lat": 43.36112, "lng": -80.31250, "battery_pct": 63, "rssi": -111, "ts": "2026-06-24T14:24:18Z" },
+    { "tag_id": "RWM-0007", "seq": 6, "acuity": "immediate", "lat": 43.36110, "lng": -80.31251, "battery_pct": 61, "rssi": -112, "ts": "2026-06-24T14:33:58Z" },
+
+    { "tag_id": "SWX-0142", "seq": 7, "acuity": "immediate", "lat": 43.36053, "lng": -80.31187, "battery_pct": 85, "rssi": -96, "ts": "2026-06-24T14:25:30Z" },
+    { "tag_id": "SWX-0142", "seq": 9, "acuity": "immediate", "lat": 43.36052, "lng": -80.31188, "battery_pct": 84, "rssi": -97, "ts": "2026-06-24T14:34:41Z" }
+  ],
+
+  "alerts": [
+    { "id": "AL-07", "type": "escalation", "severity": "critical", "tag_id": "SWX-0150", "from": "delayed", "to": "immediate", "message": "Escalated to Immediate", "ts": "2026-06-24T14:34:30Z" },
+    { "id": "AL-06", "type": "escalation", "severity": "critical", "tag_id": "RWM-0007", "from": "delayed", "to": "immediate", "message": "Escalated to Immediate", "ts": "2026-06-24T14:33:58Z" },
+    { "id": "AL-05", "type": "stale", "severity": "warning", "tag_id": "RWM-0019", "message": "No beacon for 7 min", "ts": "2026-06-24T14:34:40Z" },
+    { "id": "AL-04", "type": "gateway", "severity": "warning", "gateway_id": "GW-2", "message": "North Stack link degraded", "ts": "2026-06-24T14:33:10Z" },
+    { "id": "AL-03", "type": "stale", "severity": "warning", "tag_id": "RWM-0014", "message": "No beacon for 6 min", "ts": "2026-06-24T14:34:35Z" },
+    { "id": "AL-02", "type": "new_tag", "severity": "info", "tag_id": "SWX-0174", "message": "New Minor tag registered", "ts": "2026-06-24T14:26:40Z" },
+    { "id": "AL-01", "type": "battery", "severity": "info", "tag_id": "RWM-0019", "message": "Battery 59 percent", "ts": "2026-06-24T14:31:00Z" }
+  ]
+}
