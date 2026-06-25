@@ -55,7 +55,7 @@ void loraInit() {
 // RADIOLIB_ERR_PACKET_TOO_LONG — a reason NFC free-text stays off LoRa.
 void loraSend(const String& msg) {
   if (!loraReady) return;
-  int st = lora.transmit(msg);
+  int st = lora.transmit(msg.c_str());
   if (st != RADIOLIB_ERR_NONE) {
     Serial.print(F("LoRa TX failed, code ")); Serial.println(st);
   }
