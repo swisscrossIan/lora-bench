@@ -30,6 +30,21 @@
 
 SX1262 radio = new Module(LORA_NSS, LORA_DIO1, LORA_RST, LORA_BUSY);
 
+// ---- GC1109 front-end module (FEM) — Heltec V4 ONLY ----------------------
+// The V4 routes the radio through an external PA/LNA that must be powered and
+// TX/RX-switched, or almost no signal reaches the antenna on TX *or* RX.
+// FEM_EN powers the module; FEM_TX selects TX PA (HIGH on TX, LOW on RX).
+#define FEM_EN  2     // GC1109 CSD — enable
+#define FEM_TX  46    // GC1109 CPS — HIGH = TX PA, LOW = RX
+
+static const uint32_t rfswitch_pins[] = { FEM_TX, RADIOLIB_NC };
+static const Module::RfSwitchMode_t rfswitch_table[] = {
+  { Module::MODE_IDLE, { LOW  } },
+  { Module::MODE_RX,   { LOW  } },
+  { Module::MODE_TX,   { HIGH } },
+  END_OF_MODE_TABLE,
+};
+
 volatile bool gotPacket = false;
 void onRx() { gotPacket = true; }
 
@@ -37,7 +52,10 @@ void setup() {
   Serial.begin(115200);
   delay(300);
   Serial.println(F("\nlora_rx starting..."));
+  pinMode(FEM_EN, OUTPUT);
+  digitalWrite(FEM_EN, HIGH);             // power the GC1109 front-end (V4)
   SPI.begin(LORA_SCK, LORA_MISO, LORA_MOSI, LORA_NSS);
+  radio.setRfSwitchTable(rfswitch_pins, rfswitch_table);   // drive the TX/RX PA switch
 
   int st = radio.begin(RF_FREQ, RF_BW, RF_SF, RF_CR, RF_SYNC, RF_PWR, RF_PRE);
   if (st != RADIOLIB_ERR_NONE) {
