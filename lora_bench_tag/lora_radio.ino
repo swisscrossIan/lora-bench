@@ -35,8 +35,27 @@
 SX1262 lora = new Module(LORA_NSS, LORA_DIO1, LORA_RST, LORA_BUSY);
 bool loraReady = false;
 
+// ---- GC1109 front-end module (FEM) — Heltec V4 ONLY ----------------------
+// The V4 (unlike V3) routes the radio through an external PA/LNA that must be
+// powered and TX/RX-switched, or almost no power reaches the antenna (this was
+// the ~40 dB of missing signal). FEM_EN powers the module (held HIGH while in
+// use); FEM_TX selects the TX power amp (HIGH on transmit, LOW on receive).
+#define FEM_EN  2     // GC1109 CSD — enable
+#define FEM_TX  46    // GC1109 CPS — HIGH = TX PA, LOW = RX
+
+static const uint32_t rfswitch_pins[] = { FEM_TX, RADIOLIB_NC };
+static const Module::RfSwitchMode_t rfswitch_table[] = {
+  { Module::MODE_IDLE, { LOW  } },
+  { Module::MODE_RX,   { LOW  } },
+  { Module::MODE_TX,   { HIGH } },
+  END_OF_MODE_TABLE,
+};
+
 void loraInit() {
+  pinMode(FEM_EN, OUTPUT);
+  digitalWrite(FEM_EN, HIGH);            // power the GC1109 front-end (V4)
   SPI.begin(LORA_SCK, LORA_MISO, LORA_MOSI, LORA_NSS);
+  lora.setRfSwitchTable(rfswitch_pins, rfswitch_table);   // drive the TX/RX PA switch
   int st = lora.begin(RF_FREQ, RF_BW, RF_SF, RF_CR, RF_SYNC, RF_PWR, RF_PRE);
   if (st != RADIOLIB_ERR_NONE) {
     Serial.print(F("LoRa begin failed, code ")); Serial.println(st);
@@ -45,7 +64,7 @@ void loraInit() {
   }
   lora.setDio2AsRfSwitch(true);          // Heltec uses DIO2 for the TX/RX RF switch
   loraReady = true;
-  Serial.println(F("LoRa ready on 915.0 MHz"));
+  Serial.println(F("LoRa ready on 915.0 MHz (V4 FEM enabled)"));
 }
 
 // Transmit one record. Called from loop() alongside the Serial.println.
