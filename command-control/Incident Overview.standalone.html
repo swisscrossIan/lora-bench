@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- Standalone, fully-offline build of "Incident Overview.dc.html".
+     No external runtime (support.js), no React, no CDN. Just double-click to open.
+     Google Fonts link below is optional: if offline, it silently falls back to
+     system-ui / monospace and the layout is unaffected. -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: #0B0F14; }
+  @keyframes haloPulse { 0%,100% { transform: scale(1); opacity: .65; } 50% { transform: scale(1.7); opacity: 0; } }
+  @keyframes liveBlink { 0%,100% { opacity: 1; } 50% { opacity: .25; } }
+</style>
+</head>
+<body>
+<div style="position:relative; width:100%; height:100vh; min-height:880px; background:#0B0F14; color:#E6EAF0; font-family:'IBM Plex Sans',system-ui,sans-serif; display:flex; flex-direction:column; gap:12px; padding:14px; overflow:hidden;">
+
+  <!-- ============ HEADER BAR ============ -->
+  <header style="flex:0 0 auto; display:flex; align-items:center; gap:22px; background:#1A2330; border:1px solid #232C38; border-radius:8px; padding:11px 18px; height:62px;">
+    <div style="display:flex; align-items:center; gap:11px;">
+      <div style="width:24px; height:24px; background:#14B8C4; border-radius:5px; transform:rotate(45deg); box-shadow:0 0 14px rgba(20,184,196,.45);"></div>
+      <div style="display:flex; flex-direction:column; line-height:1.1;">
+        <span style="font-family:'IBM Plex Mono',monospace; font-size:13px; font-weight:600; letter-spacing:.14em; color:#14B8C4;">POINTAGE</span>
+        <span style="font-family:'IBM Plex Mono',monospace; font-size:10px; letter-spacing:.18em; color:#6B7585;">C2 / COMMAND</span>
+      </div>
+    </div>
+    <div style="width:1px; height:34px; background:#232C38;"></div>
+    <div style="display:flex; flex-direction:column; gap:3px;">
+      <div style="display:flex; align-items:center; gap:10px;">
+        <span style="font-size:19px; font-weight:600; letter-spacing:-.01em;">Structure Collapse — Market Hall</span>
+        <span style="display:inline-flex; align-items:center; gap:6px; font-size:11px; font-weight:600; letter-spacing:.08em; color:#FF453A; background:rgba(255,69,58,.14); border:1px solid rgba(255,69,58,.4); padding:2px 9px; border-radius:4px;">
+          <span style="width:7px; height:7px; border-radius:50%; background:#FF453A; animation:liveBlink 1.6s ease-in-out infinite;"></span>ACTIVE
+        </span>
+      </div>
+      <span style="font-family:'IBM Plex Mono',monospace; font-size:11px; color:#6B7585;">INC-2026-0624-01 · IC-3 Vasquez · Cambridge, ON</span>
+    </div>
+
+    <div style="margin-left:auto; display:flex; align-items:center; gap:26px;">
+      <div style="display:flex; flex-direction:column; align-items:flex-end; gap:2px;">
+        <span style="font-size:10px; font-weight:600; letter-spacing:.12em; color:#9AA4B2;">ELAPSED</span>
+        <span id="dc-clock" style="font-family:'IBM Plex Mono',monospace; font-size:26px; font-weight:600; font-variant-numeric:tabular-nums; line-height:1; color:#E6EAF0;">—</span>
+      </div>
+      <div style="width:1px; height:38px; background:#232C38;"></div>
+      <div style="display:flex; flex-direction:column; align-items:flex-end; gap:2px;">
+        <span style="font-size:10px; font-weight:600; letter-spacing:.12em; color:#9AA4B2;">CASUALTIES</span>
+        <span style="font-family:'IBM Plex Mono',monospace; font-size:26px; font-weight:600; font-variant-numeric:tabular-nums; line-height:1;">22</span>
+      </div>
+      <div style="width:1px; height:38px; background:#232C38;"></div>
+      <div style="display:flex; flex-direction:column; gap:5px;">
+        <div style="display:flex; align-items:center; gap:7px;">
+          <span style="width:8px; height:8px; border-radius:50%; background:#14B8C4; box-shadow:0 0 7px rgba(20,184,196,.8);"></span>
+          <span style="font-family:'IBM Plex Mono',monospace; font-size:11px; color:#E6EAF0;">GW-1 Command Post</span>
+          <span style="font-size:10px; color:#6B7585;">22 heard</span>
+        </div>
+        <div style="display:flex; align-items:center; gap:7px;">
+          <span style="width:8px; height:8px; border-radius:50%; background:transparent; border:1.5px solid #BF5AF2; box-shadow:0 0 7px rgba(191,90,242,.6);"></span>
+          <span style="font-family:'IBM Plex Mono',monospace; font-size:11px; color:#BF5AF2;">GW-2 North Stack</span>
+          <span style="font-size:10px; color:#BF5AF2;">degraded</span>
+        </div>
+      </div>
+      <div style="width:1px; height:38px; background:#232C38;"></div>
+      <div style="display:flex; flex-direction:column; align-items:flex-end; gap:2px;">
+        <span style="font-size:10px; font-weight:600; letter-spacing:.12em; color:#9AA4B2;">LAST UPDATE</span>
+        <span id="dc-updated" style="font-family:'IBM Plex Mono',monospace; font-size:13px; color:#E6EAF0;">—</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- ============ AGENCY BAND ============ -->
+  <section style="flex:0 0 auto; display:flex; align-items:stretch; gap:12px; background:#131922; border:1px solid #232C38; border-radius:8px; padding:12px 16px;">
+    <div style="display:flex; flex-direction:column; justify-content:center; gap:3px; min-width:150px;">
+      <span style="font-size:13px; font-weight:600; letter-spacing:.04em; text-transform:uppercase; color:#E6EAF0;">Agencies Tagging</span>
+      <span style="font-size:11px; color:#6B7585;">2 services on scene · 22 tags</span>
+    </div>
+    <div style="width:1px; background:#232C38;"></div>
+
+    <!-- Agency: SWX -->
+    <div style="flex:1; display:flex; align-items:center; gap:16px;">
+      <div style="display:flex; flex-direction:column; gap:2px; min-width:118px;">
+        <div style="display:flex; align-items:baseline; gap:8px;">
+          <span style="font-family:'IBM Plex Mono',monospace; font-size:14px; font-weight:600; color:#14B8C4;">SWX</span>
+          <span style="font-size:12px; color:#9AA4B2;">Sunwest EMS</span>
+        </div>
+        <span style="font-size:11px; color:#6B7585;">16 tags · 73%</span>
+      </div>
+      <div style="flex:1; display:flex; flex-direction:column; gap:6px;">
+        <div style="display:flex; height:14px; border-radius:4px; overflow:hidden; gap:2px;">
+          <div style="flex:3; background:#FF453A;" title="3 Immediate"></div>
+          <div style="flex:4; background:#FFD60A;" title="4 Delayed"></div>
+          <div style="flex:7; background:#32D74B;" title="7 Minor"></div>
+          <div style="flex:2; background:#8A8F98;" title="2 Expectant"></div>
+        </div>
+        <div style="display:flex; gap:14px; font-family:'IBM Plex Mono',monospace; font-size:11px; color:#9AA4B2;">
+          <span><span style="color:#FF453A;">●</span> 3 I</span>
+          <span><span style="color:#FFD60A;">●</span> 4 D</span>
+          <span><span style="color:#32D74B;">●</span> 7 M</span>
+          <span><span style="color:#8A8F98;">●</span> 2 E</span>
+        </div>
+      </div>
+    </div>
+    <div style="width:1px; background:#232C38;"></div>
+    <!-- Agency: RWM -->
+    <div style="flex:1; display:flex; align-items:center; gap:16px;">
+      <div style="display:flex; flex-direction:column; gap:2px; min-width:118px;">
+        <div style="display:flex; align-items:baseline; gap:8px;">
+          <span style="font-family:'IBM Plex Mono',monospace; font-size:14px; font-weight:600; color:#14B8C4;">RWM</span>
+          <span style="font-size:12px; color:#9AA4B2;">Regional Medical</span>
+        </div>
+        <span style="font-size:11px; color:#6B7585;">6 tags · 27%</span>
+      </div>
+      <div style="flex:1; display:flex; flex-direction:column; gap:6px;">
+        <div style="display:flex; height:14px; border-radius:4px; overflow:hidden; gap:2px;">
+          <div style="flex:1; background:#FF453A;" title="1 Immediate"></div>
+          <div style="flex:2; background:#FFD60A;" title="2 Delayed"></div>
+          <div style="flex:2; background:#32D74B;" title="2 Minor"></div>
+          <div style="flex:1; background:#8A8F98;" title="1 Expectant"></div>
+        </div>
+        <div style="display:flex; gap:14px; font-family:'IBM Plex Mono',monospace; font-size:11px; color:#9AA4B2;">
+          <span><span style="color:#FF453A;">●</span> 1 I</span>
+          <span><span style="color:#FFD60A;">●</span> 2 D</span>
+          <span><span style="color:#32D74B;">●</span> 2 M</span>
+          <span><span style="color:#8A8F98;">●</span> 1 E</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ TALLY BOARD ============ -->
+  <section style="flex:0 0 auto; display:grid; grid-template-columns:repeat(4,1fr); gap:12px;">
+
+    <!-- IMMEDIATE -->
+    <div style="position:relative; background:rgba(255,69,58,.13); border:1px solid rgba(255,69,58,.42); border-radius:8px; padding:14px 16px; overflow:hidden;">
+      <div style="position:absolute; left:0; top:0; bottom:0; width:4px; background:#FF453A;"></div>
+      <div style="display:flex; align-items:center; justify-content:space-between;">
+        <div style="display:flex; align-items:center; gap:9px;">
+          <span style="width:0; height:0; border-left:8px solid transparent; border-right:8px solid transparent; border-bottom:14px solid #FF453A;"></span>
+          <span style="font-size:13px; font-weight:600; letter-spacing:.05em; text-transform:uppercase; color:#FF453A;">Immediate</span>
+        </div>
+        <span style="font-family:'IBM Plex Mono',monospace; font-size:12px; font-weight:600; color:#FF453A; background:rgba(255,69,58,.16); padding:2px 8px; border-radius:4px;">▲ +2 / 5m</span>
+      </div>
+      <div style="display:flex; align-items:flex-end; gap:14px; margin-top:6px;">
+        <span style="font-family:'IBM Plex Mono',monospace; font-size:56px; font-weight:600; font-variant-numeric:tabular-nums; line-height:.9; color:#E6EAF0;">4</span>
+        <div style="display:flex; flex-direction:column; gap:6px; padding-bottom:8px; flex:1;">
+          <div style="display:flex; justify-content:space-between; font-family:'IBM Plex Mono',monospace; font-size:11px;">
+            <span style="color:#9AA4B2;">3 on scene</span><span style="color:#E6EAF0;">1 moved ↗</span>
+          </div>
+          <div style="height:4px; border-radius:2px; background:rgba(255,255,255,.1); overflow:hidden;"><div style="width:25%; height:100%; background:#E6EAF0;"></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- DELAYED -->
+    <div style="position:relative; background:rgba(255,214,10,.11); border:1px solid rgba(255,214,10,.4); border-radius:8px; padding:14px 16px; overflow:hidden;">
+      <div style="position:absolute; left:0; top:0; bottom:0; width:4px; background:#FFD60A;"></div>
+      <div style="display:flex; align-items:center; justify-content:space-between;">
+        <div style="display:flex; align-items:center; gap:9px;">
+          <span style="width:14px; height:14px; background:#FFD60A; border-radius:3px;"></span>
+          <span style="font-size:13px; font-weight:600; letter-spacing:.05em; text-transform:uppercase; color:#FFD60A;">Delayed</span>
+        </div>
+        <span style="font-family:'IBM Plex Mono',monospace; font-size:12px; font-weight:600; color:#9AA4B2; background:rgba(255,255,255,.06); padding:2px 8px; border-radius:4px;">— 0 / 5m</span>
+      </div>
+      <div style="display:flex; align-items:flex-end; gap:14px; margin-top:6px;">
+        <span style="font-family:'IBM Plex Mono',monospace; font-size:56px; font-weight:600; font-variant-numeric:tabular-nums; line-height:.9; color:#E6EAF0;">6</span>
+        <div style="display:flex; flex-direction:column; gap:6px; padding-bottom:8px; flex:1;">
+          <div style="display:flex; justify-content:space-between; font-family:'IBM Plex Mono',monospace; font-size:11px;">
+            <span style="color:#9AA4B2;">6 on scene</span><span style="color:#6B7585;">0 moved</span>
+          </div>
+          <div style="height:4px; border-radius:2px; background:rgba(255,255,255,.1); overflow:hidden;"><div style="width:0%; height:100%; background:#E6EAF0;"></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MINOR -->
+    <div style="position:relative; background:rgba(50,215,75,.11); border:1px solid rgba(50,215,75,.4); border-radius:8px; padding:14px 16px; overflow:hidden;">
+      <div style="position:absolute; left:0; top:0; bottom:0; width:4px; background:#32D74B;"></div>
+      <div style="display:flex; align-items:center; justify-content:space-between;">
+        <div style="display:flex; align-items:center; gap:9px;">
+          <span style="width:14px; height:14px; background:#32D74B; border-radius:50%;"></span>
+          <span style="font-size:13px; font-weight:600; letter-spacing:.05em; text-transform:uppercase; color:#32D74B;">Minor</span>
+        </div>
+        <span style="font-family:'IBM Plex Mono',monospace; font-size:12px; font-weight:600; color:#9AA4B2; background:rgba(255,255,255,.06); padding:2px 8px; border-radius:4px;">▲ +1 / 5m</span>
+      </div>
+      <div style="display:flex; align-items:flex-end; gap:14px; margin-top:6px;">
+        <span style="font-family:'IBM Plex Mono',monospace; font-size:56px; font-weight:600; font-variant-numeric:tabular-nums; line-height:.9; color:#E6EAF0;">9</span>
+        <div style="display:flex; flex-direction:column; gap:6px; padding-bottom:8px; flex:1;">
+          <div style="display:flex; justify-content:space-between; font-family:'IBM Plex Mono',monospace; font-size:11px;">
+            <span style="color:#9AA4B2;">7 on scene</span><span style="color:#E6EAF0;">2 moved ↗</span>
+          </div>
+          <div style="height:4px; border-radius:2px; background:rgba(255,255,255,.1); overflow:hidden;"><div style="width:22%; height:100%; background:#E6EAF0;"></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- EXPECTANT -->
+    <div style="position:relative; background:rgba(138,143,152,.13); border:1px solid rgba(138,143,152,.45); border-radius:8px; padding:14px 16px; overflow:hidden;">
+      <div style="position:absolute; left:0; top:0; bottom:0; width:4px; background:#8A8F98;"></div>
+      <div style="display:flex; align-items:center; justify-content:space-between;">
+        <div style="display:flex; align-items:center; gap:9px;">
+          <span style="width:13px; height:13px; background:#8A8F98; border:1px solid #B6BBC4; transform:rotate(45deg);"></span>
+          <span style="font-size:13px; font-weight:600; letter-spacing:.05em; text-transform:uppercase; color:#B6BBC4;">Expectant</span>
+        </div>
+        <span style="font-family:'IBM Plex Mono',monospace; font-size:12px; font-weight:600; color:#9AA4B2; background:rgba(255,255,255,.06); padding:2px 8px; border-radius:4px;">— 0 / 5m</span>
+      </div>
+      <div style="display:flex; align-items:flex-end; gap:14px; margin-top:6px;">
+        <span style="font-family:'IBM Plex Mono',monospace; font-size:56px; font-weight:600; font-variant-numeric:tabular-nums; line-height:.9; color:#E6EAF0;">3</span>
+        <div style="display:flex; flex-direction:column; gap:6px; padding-bottom:8px; flex:1;">
+          <div style="display:flex; justify-content:space-between; font-family:'IBM Plex Mono',monospace; font-size:11px;">
+            <span style="color:#9AA4B2;">3 on scene</span><span style="color:#6B7585;">0 moved</span>
+          </div>
+          <div style="height:4px; border-radius:2px; background:rgba(255,255,255,.1); overflow:hidden;"><div style="width:0%; height:100%; background:#E6EAF0;"></div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ MAIN: MAP + RAIL ============ -->
+  <section style="flex:1 1 auto; min-height:0; display:grid; grid-template-columns:1fr 372px; gap:12px;">
+
+    <!-- MAP -->
+    <div style="position:relative; background:#0B0F14; border:1px solid #232C38; border-radius:8px; overflow:hidden;">
+      <!-- basemap texture -->
+      <div style="position:absolute; inset:0; background-image:linear-gradient(rgba(35,44,56,.55) 1px,transparent 1px),linear-gradient(90deg,rgba(35,44,56,.55) 1px,transparent 1px); background-size:46px 46px;"></div>
+      <div style="position:absolute; inset:0; background-image:linear-gradient(rgba(26,35,48,.4) 1px,transparent 1px),linear-gradient(90deg,rgba(26,35,48,.4) 1px,transparent 1px); background-size:230px 230px;"></div>
+      <!-- street hints -->
+      <div style="position:absolute; left:-10%; top:30%; width:120%; height:11px; background:#151c26; transform:rotate(-7deg);"></div>
+      <div style="position:absolute; left:62%; top:-10%; width:9px; height:120%; background:#151c26; transform:rotate(6deg);"></div>
+      <!-- collapsed structure footprint -->
+      <div style="position:absolute; left:40%; top:54%; width:200px; height:128px; transform:translate(-50%,-50%) rotate(4deg); border:1.5px dashed #3a4555; background:rgba(58,69,85,.16); border-radius:3px;">
+        <span style="position:absolute; top:5px; left:7px; font-family:'IBM Plex Mono',monospace; font-size:10px; letter-spacing:.1em; color:#5a6577;">MARKET HALL</span>
+      </div>
+      <!-- vignette -->
+      <div style="position:absolute; inset:0; background:radial-gradient(ellipse at 45% 50%, transparent 40%, rgba(11,15,20,.72) 100%); pointer-events:none;"></div>
+
+      <!-- markers (populated by script) -->
+      <div id="dc-marker-layer"></div>
+
+      <!-- top-left label -->
+      <div style="position:absolute; top:14px; left:16px; display:flex; align-items:center; gap:9px;">
+        <span style="width:8px; height:8px; border-radius:50%; background:#14B8C4; animation:liveBlink 1.6s ease-in-out infinite; box-shadow:0 0 8px rgba(20,184,196,.9);"></span>
+        <span style="font-size:12px; font-weight:600; letter-spacing:.06em; text-transform:uppercase; color:#E6EAF0;">Live Map</span>
+        <span style="font-family:'IBM Plex Mono',monospace; font-size:11px; color:#6B7585;">43.3601, −80.3127</span>
+      </div>
+
+      <!-- on-scene / moved overlay -->
+      <div style="position:absolute; top:12px; right:14px; display:flex; gap:8px;">
+        <div style="display:flex; flex-direction:column; align-items:flex-end; background:rgba(19,25,34,.85); border:1px solid #232C38; border-radius:6px; padding:6px 11px;">
+          <span style="font-family:'IBM Plex Mono',monospace; font-size:17px; font-weight:600; color:#E6EAF0;">19</span>
+          <span style="font-size:9px; letter-spacing:.08em; color:#9AA4B2;">ON SCENE</span>
+        </div>
+        <div style="display:flex; flex-direction:column; align-items:flex-end; background:rgba(19,25,34,.85); border:1px solid #232C38; border-radius:6px; padding:6px 11px;">
+          <span style="font-family:'IBM Plex Mono',monospace; font-size:17px; font-weight:600; color:#E6EAF0;">3 ↗</span>
+          <span style="font-size:9px; letter-spacing:.08em; color:#9AA4B2;">MOVED OFF-SITE</span>
+        </div>
+      </div>
+
+      <!-- legend -->
+      <div style="position:absolute; bottom:14px; left:16px; background:rgba(19,25,34,.9); border:1px solid #232C38; border-radius:7px; padding:11px 14px; backdrop-filter:blur(2px);">
+        <div style="font-size:10px; font-weight:600; letter-spacing:.1em; color:#9AA4B2; margin-bottom:9px;">ACUITY · WORST FIRST</div>
+        <div style="display:flex; flex-direction:column; gap:7px; font-size:12px;">
+          <div style="display:flex; align-items:center; gap:9px;"><span style="width:0; height:0; border-left:6px solid transparent; border-right:6px solid transparent; border-bottom:11px solid #FF453A;"></span><span style="color:#E6EAF0;">Immediate</span></div>
+          <div style="display:flex; align-items:center; gap:9px;"><span style="width:11px; height:11px; background:#FFD60A; border-radius:2px;"></span><span style="color:#E6EAF0;">Delayed</span></div>
+          <div style="display:flex; align-items:center; gap:9px;"><span style="width:11px; height:11px; background:#32D74B; border-radius:50%;"></span><span style="color:#E6EAF0;">Minor</span></div>
+          <div style="display:flex; align-items:center; gap:9px;"><span style="width:10px; height:10px; background:#8A8F98; border:1px solid #B6BBC4; transform:rotate(45deg);"></span><span style="color:#E6EAF0;">Expectant</span></div>
+        </div>
+        <div style="margin-top:10px; padding-top:9px; border-top:1px solid #232C38; display:flex; flex-direction:column; gap:6px; font-size:11px; color:#9AA4B2;">
+          <div style="display:flex; align-items:center; gap:9px;"><span style="width:12px; height:12px; border-radius:50%; border:1.5px dashed #636872;"></span><span>Stale (no beacon)</span></div>
+          <div style="display:flex; align-items:center; gap:9px;"><span style="width:13px; height:13px; border-radius:50%; background:#E6EAF0; color:#0B0F14; font-size:9px; font-weight:700; display:flex; align-items:center; justify-content:center;">↗</span><span>Transported</span></div>
+        </div>
+      </div>
+
+      <!-- scale -->
+      <div style="position:absolute; bottom:16px; right:16px; display:flex; flex-direction:column; align-items:center; gap:3px;">
+        <div style="width:70px; height:3px; background:#9AA4B2; border-left:2px solid #9AA4B2; border-right:2px solid #9AA4B2; box-sizing:content-box;"></div>
+        <span style="font-family:'IBM Plex Mono',monospace; font-size:10px; color:#6B7585;">~40 m</span>
+      </div>
+    </div>
+
+    <!-- PRIORITY RAIL -->
+    <aside style="display:flex; flex-direction:column; background:#131922; border:1px solid #232C38; border-radius:8px; overflow:hidden;">
+      <div style="flex:0 0 auto; display:flex; align-items:center; justify-content:space-between; padding:13px 16px; border-bottom:1px solid #232C38;">
+        <span style="font-size:13px; font-weight:600; letter-spacing:.05em; text-transform:uppercase; color:#E6EAF0;">Priority Feed</span>
+        <span style="display:inline-flex; align-items:center; gap:6px; font-family:'IBM Plex Mono',monospace; font-size:11px; color:#FF453A; background:rgba(255,69,58,.14); padding:2px 8px; border-radius:4px;">2 critical</span>
+      </div>
+      <div id="dc-alerts" style="flex:1; min-height:0; overflow-y:auto; display:flex; flex-direction:column;"></div>
+      <div style="flex:0 0 auto; padding:10px 16px; border-top:1px solid #232C38; font-family:'IBM Plex Mono',monospace; font-size:11px; color:#6B7585; text-align:center;">7 events · last 9 min</div>
+    </aside>
+  </section>
+</div>
+
+<script>
+(function () {
+  "use strict";
+
+  // ---- state ----
+  var tick = 0;
+
+  // ---- formatters (ported verbatim from the original DCLogic) ----
+  function fmtClock(t) {
+    var h = Math.floor(t / 3600), m = Math.floor((t % 3600) / 60), s = t % 60;
+    var mm = String(m).padStart(2, '0'), ss = String(s).padStart(2, '0');
+    return h > 0 ? h + ':' + mm + ':' + ss : mm + ':' + ss;
+  }
+  function fmtAgo(s) { return s < 60 ? s + 's ago' : Math.floor(s / 60) + 'm ago'; }
+
+  // small DOM helper: el(tag, styleObj, [children], extraProps)
+  function el(tag, style, children, props) {
+    var node = document.createElement(tag);
+    if (style) Object.assign(node.style, style);
+    if (props) for (var k in props) node.setAttribute(k, props[k]);
+    if (children != null) {
+      if (!Array.isArray(children)) children = [children];
+      children.forEach(function (c) {
+        if (c == null) return;
+        node.appendChild(typeof c === 'string' ? document.createTextNode(c) : c);
+      });
+    }
+    return node;
+  }
+
+  var C = { immediate: '#FF453A', delayed: '#FFD60A', minor: '#32D74B', expectant: '#8A8F98' };
+
+  // ---- sample data: tags (latest event per tag) ----
+  var tags = [
+    { id: 'SWX-0142', acuity: 'immediate', lat: 43.36052, lng: -80.31188, lifecycle: 'active' },
+    { id: 'SWX-0150', acuity: 'immediate', lat: 43.35981, lng: -80.31322, lifecycle: 'active' },
+    { id: 'RWM-0007', acuity: 'immediate', lat: 43.36110, lng: -80.31251, lifecycle: 'active' },
+    { id: 'SWX-0163', acuity: 'immediate', lat: 43.36028, lng: -80.31402, lifecycle: 'active', moved: true },
+    { id: 'SWX-0144', acuity: 'delayed', lat: 43.36071, lng: -80.31230, lifecycle: 'active' },
+    { id: 'SWX-0146', acuity: 'delayed', lat: 43.35995, lng: -80.31159, lifecycle: 'active' },
+    { id: 'RWM-0011', acuity: 'delayed', lat: 43.36133, lng: -80.31360, lifecycle: 'active' },
+    { id: 'SWX-0158', acuity: 'delayed', lat: 43.36009, lng: -80.31298, lifecycle: 'active' },
+    { id: 'RWM-0014', acuity: 'delayed', lat: 43.36088, lng: -80.31419, lifecycle: 'stale' },
+    { id: 'SWX-0171', acuity: 'delayed', lat: 43.35962, lng: -80.31244, lifecycle: 'active' },
+    { id: 'SWX-0143', acuity: 'minor', lat: 43.36120, lng: -80.31180, lifecycle: 'active', moved: true },
+    { id: 'SWX-0145', acuity: 'minor', lat: 43.36140, lng: -80.31205, lifecycle: 'active', moved: true },
+    { id: 'SWX-0147', acuity: 'minor', lat: 43.36155, lng: -80.31170, lifecycle: 'active' },
+    { id: 'RWM-0009', acuity: 'minor', lat: 43.36129, lng: -80.31142, lifecycle: 'active' },
+    { id: 'SWX-0152', acuity: 'minor', lat: 43.36165, lng: -80.31221, lifecycle: 'active' },
+    { id: 'SWX-0155', acuity: 'minor', lat: 43.36148, lng: -80.31255, lifecycle: 'active' },
+    { id: 'RWM-0016', acuity: 'minor', lat: 43.36172, lng: -80.31198, lifecycle: 'active' },
+    { id: 'SWX-0168', acuity: 'minor', lat: 43.36137, lng: -80.31280, lifecycle: 'active' },
+    { id: 'SWX-0174', acuity: 'minor', lat: 43.36158, lng: -80.31300, lifecycle: 'active' },
+    { id: 'SWX-0149', acuity: 'expectant', lat: 43.35949, lng: -80.31355, lifecycle: 'active' },
+    { id: 'SWX-0160', acuity: 'expectant', lat: 43.35970, lng: -80.31390, lifecycle: 'active' },
+    { id: 'RWM-0019', acuity: 'expectant', lat: 43.35938, lng: -80.31318, lifecycle: 'stale' }
+  ];
+
+  var lats = tags.map(function (t) { return t.lat; });
+  var lngs = tags.map(function (t) { return t.lng; });
+  var minLa = Math.min.apply(null, lats), maxLa = Math.max.apply(null, lats);
+  var minLo = Math.min.apply(null, lngs), maxLo = Math.max.apply(null, lngs);
+  var proj = function (v) { return (0.12 + 0.76 * v) * 100; };
+
+  function shapeFor(acuity) {
+    var col = C[acuity];
+    var ring = { boxShadow: '0 0 0 1.5px rgba(11,15,20,.95), 0 2px 5px rgba(0,0,0,.55)' };
+    if (acuity === 'immediate')
+      return el('div', { width: 0, height: 0, borderLeft: '11px solid transparent', borderRight: '11px solid transparent', borderBottom: '19px solid ' + col, filter: 'drop-shadow(0 0 1.4px #0B0F14) drop-shadow(0 2px 3px rgba(0,0,0,.6))' });
+    if (acuity === 'delayed')
+      return el('div', Object.assign({ width: '17px', height: '17px', background: col, borderRadius: '3px' }, ring));
+    if (acuity === 'minor')
+      return el('div', Object.assign({ width: '17px', height: '17px', background: col, borderRadius: '50%' }, ring));
+    return el('div', { width: '15px', height: '15px', background: col, border: '1px solid #C2C7CF', transform: 'rotate(45deg)', boxShadow: '0 0 0 1.5px rgba(11,15,20,.95)' });
+  }
+
+  // ---- build the (static) marker layer once ----
+  function buildMarkers() {
+    var layer = el('div', { position: 'absolute', inset: 0, pointerEvents: 'none' });
+    tags.forEach(function (t) {
+      var x = proj((t.lng - minLo) / (maxLo - minLo));
+      var y = proj((maxLa - t.lat) / (maxLa - minLa));
+      var kids = [];
+      if (t.acuity === 'immediate')
+        kids.push(el('div', { position: 'absolute', left: '50%', top: '55%', width: '26px', height: '26px', marginLeft: '-13px', marginTop: '-13px', borderRadius: '50%', boxShadow: '0 0 0 2px rgba(255,69,58,.6)', animation: 'haloPulse 1.9s ease-in-out infinite' }));
+      if (t.lifecycle === 'stale')
+        kids.push(el('div', { position: 'absolute', left: '50%', top: '50%', width: '28px', height: '28px', marginLeft: '-14px', marginTop: '-14px', borderRadius: '50%', border: '1.5px dashed #636872' }));
+      kids.push(el('div', { position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center', opacity: t.lifecycle === 'stale' ? 0.72 : 1 }, shapeFor(t.acuity)));
+      if (t.moved)
+        kids.push(el('div', { position: 'absolute', top: '-7px', right: '-7px', width: '15px', height: '15px', borderRadius: '50%', background: '#E6EAF0', color: '#0B0F14', fontSize: '10px', fontWeight: 700, display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 0 0 1.5px #0B0F14' }, '↗'));
+      var title = t.id + ' · ' + t.acuity + (t.lifecycle === 'stale' ? ' · stale' : '') + (t.moved ? ' · transported' : '');
+      var marker = el('div', { position: 'absolute', left: x + '%', top: y + '%', width: '22px', height: '22px', transform: 'translate(-50%,-50%)' }, kids, { title: title });
+      layer.appendChild(marker);
+    });
+    var mount = document.getElementById('dc-marker-layer');
+    mount.innerHTML = '';
+    mount.appendChild(layer);
+  }
+
+  // ---- alert feed (base data; relative time re-derived from tick) ----
+  var alertsData = [
+    { id: 'AL-07', icon: '↑', iconBg: 'rgba(255,69,58,.18)', iconColor: '#FF453A', message: 'Escalated to Immediate', ref: 'SWX-0150', refColor: '#FF453A', detail: 'Delayed → Immediate', sec: 22 },
+    { id: 'AL-06', icon: '↑', iconBg: 'rgba(255,69,58,.18)', iconColor: '#FF453A', message: 'Escalated to Immediate', ref: 'RWM-0007', refColor: '#FF453A', detail: 'Delayed → Immediate', sec: 54 },
+    { id: 'AL-05', icon: '⦸', iconBg: 'rgba(99,104,114,.22)', iconColor: '#9AA4B2', message: 'No beacon for 7 min', ref: 'RWM-0019', refColor: '#9AA4B2', detail: 'Expectant · stale', sec: 12 },
+    { id: 'AL-03', icon: '⦸', iconBg: 'rgba(99,104,114,.22)', iconColor: '#9AA4B2', message: 'No beacon for 6 min', ref: 'RWM-0014', refColor: '#9AA4B2', detail: 'Delayed · stale', sec: 17 },
+    { id: 'AL-04', icon: '✦', iconBg: 'rgba(191,90,242,.18)', iconColor: '#BF5AF2', message: 'North Stack link degraded', ref: 'GW-2', refColor: '#BF5AF2', detail: 'Gateway · RSSI floor −121', sec: 102 },
+    { id: 'AL-01', icon: '▮', iconBg: 'rgba(20,184,196,.16)', iconColor: '#14B8C4', message: 'Battery at 59%', ref: 'RWM-0019', refColor: '#9AA4B2', detail: 'Device health', sec: 232 },
+    { id: 'AL-02', icon: '+', iconBg: 'rgba(20,184,196,.16)', iconColor: '#14B8C4', message: 'New Minor tag registered', ref: 'SWX-0174', refColor: '#9AA4B2', detail: 'First beacon', sec: 492 }
+  ];
+
+  function buildAlerts() {
+    var mount = document.getElementById('dc-alerts');
+    mount.innerHTML = '';
+    alertsData.forEach(function (a) {
+      var rel = fmtAgo(a.sec + tick);
+      var row = el('div', { display: 'flex', gap: '11px', padding: '12px 16px', borderBottom: '1px solid #1c2531' }, [
+        el('div', { flex: '0 0 auto', width: '26px', height: '26px', borderRadius: '6px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '13px', fontWeight: 700, background: a.iconBg, color: a.iconColor }, a.icon),
+        el('div', { flex: '1', minWidth: 0, display: 'flex', flexDirection: 'column', gap: '3px' }, [
+          el('div', { display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', gap: '8px' }, [
+            el('span', { fontSize: '13px', fontWeight: 600, color: '#E6EAF0' }, a.message),
+            el('span', { fontFamily: "'IBM Plex Mono',monospace", fontSize: '11px', color: '#6B7585', whiteSpace: 'nowrap' }, rel)
+          ]),
+          el('div', { display: 'flex', alignItems: 'center', gap: '8px' }, [
+            el('span', { fontFamily: "'IBM Plex Mono',monospace", fontSize: '11px', color: a.refColor }, a.ref),
+            el('span', { fontSize: '11px', color: '#6B7585' }, a.detail)
+          ])
+        ])
+      ]);
+      mount.appendChild(row);
+    });
+  }
+
+  // ---- per-second update of the live values ----
+  function updateLive() {
+    document.getElementById('dc-clock').textContent = fmtClock(2092 + tick);
+    document.getElementById('dc-updated').textContent = fmtAgo(8 + tick);
+    buildAlerts(); // relative times tick each second
+  }
+
+  // ---- init ----
+  buildMarkers();
+  updateLive();
+  setInterval(function () { tick += 1; updateLive(); }, 1000);
+})();
+</script>
+</body>
+</html>
