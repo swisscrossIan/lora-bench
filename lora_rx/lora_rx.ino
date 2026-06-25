@@ -37,7 +37,7 @@ SX1262 radio = new Module(LORA_NSS, LORA_DIO1, LORA_RST, LORA_BUSY);
 #define FEM_EN  2     // GC1109 CSD — enable
 #define FEM_TX  46    // GC1109 CPS — HIGH = TX PA, LOW = RX
 
-static const uint32_t rfswitch_pins[] = { FEM_TX, RADIOLIB_NC };
+static const uint32_t rfswitch_pins[] = { FEM_TX, RADIOLIB_NC, RADIOLIB_NC, RADIOLIB_NC, RADIOLIB_NC };
 static const Module::RfSwitchMode_t rfswitch_table[] = {
   { Module::MODE_IDLE, { LOW  } },
   { Module::MODE_RX,   { LOW  } },
