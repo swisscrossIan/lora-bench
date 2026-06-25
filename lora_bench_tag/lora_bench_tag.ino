@@ -69,6 +69,7 @@ void setup() {
  }
  initTagId();
  qrInit();   // OLED QR — defined in qr_display.ino (same sketch)
+ loraInit(); // SX1262 radio — defined in lora_radio.ino (same sketch)
 }
 
 
@@ -101,7 +102,9 @@ void loop() {
    lastTorn        = torn;
    lastActive      = active;
    lastTransported = transported;
-   Serial.println(buildPayload(torn, active, transported));   // JSON record (payload.ino)
+   String rec = buildPayload(torn, active, transported);      // JSON record (payload.ino)
+   Serial.println(rec);
+   loraSend(rec);                                             // same record over LoRa (lora_radio.ino)
    if (active) qrShowMac(); else qrClear();                   // QR of the MAC on activation
  }
 }
