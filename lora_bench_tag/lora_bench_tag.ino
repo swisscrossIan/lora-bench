@@ -35,6 +35,8 @@ bool lastActive      = false;
 bool lastTransported = false;
 bool firstReport     = true;
 
+uint32_t lastBeaconMs = 0;   // 10 s beacon timer while active (range testing)
+
 
 void initTagId() {
  snprintf(tag_id, sizeof(tag_id), "%012llX",
@@ -106,5 +108,13 @@ void loop() {
    Serial.println(rec);
    loraSend(rec);                                             // same record over LoRa (lora_radio.ino)
    if (active) qrShowMac(); else qrClear();                   // QR of the MAC on activation
+ }
+
+ // 10 s beacon while active — repeats the record for room-to-room range testing.
+ if (active && millis() - lastBeaconMs >= 10000) {
+   lastBeaconMs = millis();
+   String rec = buildPayload(torn, active, transported);
+   Serial.println(rec);
+   loraSend(rec);
  }
 }
