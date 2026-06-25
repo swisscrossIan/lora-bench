@@ -35,6 +35,12 @@ bool lastActive      = false;
 bool lastTransported = false;
 bool firstReport     = true;
 
+// Periodic re-send while active: on top of the change-driven emit, repeat the
+// record every BEACON_MS so a receiver gets a steady stream for room-to-room
+// range testing. Quiet again once the tag goes inactive.
+const uint32_t BEACON_MS = 10000;   // 10 s
+uint32_t lastEmitMs = 0;
+
 
 void initTagId() {
  snprintf(tag_id, sizeof(tag_id), "%012llX",
@@ -73,6 +79,16 @@ void setup() {
 }
 
 
+// Build, print, and transmit one record; remember when we last sent so the
+// beacon interval is measured from the most recent emit (change or beacon).
+void emitRecord(int torn, bool active, bool transported) {
+ String rec = buildPayload(torn, active, transported);   // JSON record (payload.ino)
+ Serial.println(rec);
+ loraSend(rec);                                          // same record over LoRa (lora_radio.ino)
+ lastEmitMs = millis();
+}
+
+
 void loop() {
  for (uint8_t i = 0; i < NUM_PINS; i++) {
    int reading = digitalRead(ALL_PINS[i]);
@@ -102,9 +118,9 @@ void loop() {
    lastTorn        = torn;
    lastActive      = active;
    lastTransported = transported;
-   String rec = buildPayload(torn, active, transported);      // JSON record (payload.ino)
-   Serial.println(rec);
-   loraSend(rec);                                             // same record over LoRa (lora_radio.ino)
+   emitRecord(torn, active, transported);                     // change-driven send
    if (active) qrShowMac(); else qrClear();                   // QR of the MAC on activation
+ } else if (active && millis() - lastEmitMs >= BEACON_MS) {
+   emitRecord(torn, active, transported);                     // 10 s beacon while active
  }
 }
