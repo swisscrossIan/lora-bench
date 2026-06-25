@@ -35,7 +35,7 @@ bool lastActive      = false;
 bool lastTransported = false;
 bool firstReport     = true;
 
-uint32_t lastBeaconMs = 0;   // 10 s beacon timer while active (range testing)
+uint32_t lastBeaconMs = 0;   // 20 s beacon timer while active (range testing)
 
 
 void initTagId() {
@@ -110,8 +110,8 @@ void loop() {
    if (active) qrShowMac(); else qrClear();                   // QR of the MAC on activation
  }
 
- // 10 s beacon while active — repeats the record for room-to-room range testing.
- if (active && millis() - lastBeaconMs >= 10000) {
+ // 20 s beacon while active — repeats the record for room-to-room range testing.
+ if (active && millis() - lastBeaconMs >= 20000) {
    lastBeaconMs = millis();
    String rec = buildPayload(torn, active, transported);
    Serial.println(rec);
