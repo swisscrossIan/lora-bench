@@ -60,6 +60,43 @@ const char* triageStatus(int level) {
 // (buildPayload). triageStatus() above feeds its triage_status field.
 
 
+// ---- OLED status display ---------------------------------------------------
+// Plain-text status on the onboard SSD1306. Replaces the old QR code (its
+// refresh was too slow for a phone to scan). Folded into the tag so there are
+// no separate display tabs. REQUIRED LIBRARY: "U8g2" by oliver.
+#include <Wire.h>
+#include <U8g2lib.h>
+
+#define OLED_SDA   17
+#define OLED_SCL   18
+#define OLED_RST   21
+#define OLED_VEXT  36   // OLED power rail; active LOW on Heltec
+
+U8G2_SSD1306_128X64_NONAME_F_HW_I2C oled(U8G2_R0, OLED_RST);
+
+void oledInit() {
+ pinMode(OLED_VEXT, OUTPUT);
+ digitalWrite(OLED_VEXT, LOW);   // enable OLED power rail
+ delay(50);
+ Wire.begin(OLED_SDA, OLED_SCL);
+ oled.begin();
+ oled.clearBuffer();
+ oled.sendBuffer();
+}
+
+// Show plain-text status: ACTIVE/INACTIVE, triage colour, transport state.
+void oledStatus(bool active, int level, bool transported) {
+ oled.clearBuffer();
+ oled.setFont(u8g2_font_ncenB14_tr);
+ oled.drawStr(0, 16, active ? "ACTIVE" : "INACTIVE");
+ oled.setFont(u8g2_font_ncenB10_tr);
+ oled.drawStr(0, 38, triageStatus(level));            // none/green/yellow/red/black
+ oled.setFont(u8g2_font_6x12_tr);
+ oled.drawStr(0, 60, transported ? "TRANSPORTED" : "ON-SCENE");
+ oled.sendBuffer();
+}
+
+
 void setup() {
  Serial.begin(115200);
  delay(300);
@@ -70,7 +107,7 @@ void setup() {
    lastEdgeMs[i]  = 0;
  }
  initTagId();
- qrInit();   // OLED QR — defined in qr_display.ino (same sketch)
+ oledInit();   // OLED status display (text)
  loraInit(); // SX1262 radio — defined in lora_radio.ino (same sketch)
 }
 
@@ -107,7 +144,7 @@ void loop() {
    String rec = buildPayload(torn, active, transported);      // JSON record (payload.ino)
    Serial.println(rec);
    loraSend(rec);                                             // same record over LoRa (lora_radio.ino)
-   if (active) qrShowMac(); else qrClear();                   // QR of the MAC on activation
+   oledStatus(active, torn, transported);                     // update the text display
  }
 
  // 20 s beacon while active — repeats the record for room-to-room range testing.
