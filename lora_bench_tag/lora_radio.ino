@@ -25,9 +25,9 @@
 
 // Shared radio params — keep identical to lora_rx (US 915 band, Ontario/NA).
 #define RF_FREQ    915.0   // MHz
-#define RF_BW      62.5   // kHz
+#define RF_BW      125.0   // kHz
 #define RF_SF       12     // spreading factor 7..12 (12 = max range, slower)
-#define RF_CR       8      // coding rate 4/8
+#define RF_CR       7      // coding rate 4/7
 #define RF_SYNC    0x12    // private-network sync word
 #define RF_PWR      22     // dBm (SX1262 max)
 #define RF_PRE      8      // preamble length
