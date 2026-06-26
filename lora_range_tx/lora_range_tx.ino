@@ -20,9 +20,9 @@
 
 // Radio params — MUST match lora_range_rx exactly (US 915 band)
 #define RF_FREQ   915.0
-#define RF_BW     125.0
+#define RF_BW     62.5
 #define RF_SF     12
-#define RF_CR     7
+#define RF_CR     8
 #define RF_SYNC   0x12
 #define RF_PWR    22       // RadioLib SX1262 ceiling; GC1109 FEM lifts PA output to ~28 dBm
                            // (high-power SKU). Drop to ~10 for close-range bench work.
@@ -53,7 +53,7 @@ void setup() {
   delay(300);
   Serial.println(F("\nlora_range_tx (Heltec V4)..."));
 
-  pinMode(FEM_PWR, OUTPUT); digitalWrite(FEM_PWR, HIGH);
+  pinMode(FEM_PWR, OUTPUT); digitalWrite(FEM_PWR, LOW);
   pinMode(FEM_EN,  OUTPUT); digitalWrite(FEM_EN,  HIGH);
   delay(2);
 
