@@ -37,11 +37,15 @@ bool loraReady = false;
 
 // ---- GC1109 front-end module (FEM) — Heltec V4 ONLY ----------------------
 // The V4 (unlike V3) routes the radio through an external PA/LNA that must be
-// powered and TX/RX-switched, or almost no power reaches the antenna (this was
-// the ~40 dB of missing signal). FEM_EN powers the module (held HIGH while in
-// use); FEM_TX selects the TX power amp (HIGH on transmit, LOW on receive).
-#define FEM_EN  2     // GC1109 CSD — enable
+// powered and TX/RX-switched, or almost no power reaches the antenna. The
+// GC1109 needs THREE control lines: FEM_PWR (master power) and FEM_EN both held
+// HIGH, and FEM_TX selecting the TX power amp (HIGH on transmit, LOW on RX).
+// NOTE: the V4 LoRa antenna is the FRONT IPEX pad (beside the OLED); the back
+// pad is 2.4 GHz and needs a 0-ohm mod — don't put the LoRa pigtail there.
+#define FEM_PWR 7     // GC1109 VFEM_Ctrl — master power, HIGH
+#define FEM_EN  2     // GC1109 CSD — enable, HIGH
 #define FEM_TX  46    // GC1109 CPS — HIGH = TX PA, LOW = RX
+#define RF_TCXO 1.8   // Heltec V4 TCXO reference voltage (DIO3-controlled)
 
 static const uint32_t rfswitch_pins[] = { FEM_TX, RADIOLIB_NC, RADIOLIB_NC, RADIOLIB_NC, RADIOLIB_NC };
 static const Module::RfSwitchMode_t rfswitch_table[] = {
@@ -52,11 +56,14 @@ static const Module::RfSwitchMode_t rfswitch_table[] = {
 };
 
 void loraInit() {
-  pinMode(FEM_EN, OUTPUT);
-  digitalWrite(FEM_EN, HIGH);            // power the GC1109 front-end (V4)
+  pinMode(FEM_PWR, OUTPUT); digitalWrite(FEM_PWR, HIGH);  // GC1109 master power (V4)
+  pinMode(FEM_EN,  OUTPUT); digitalWrite(FEM_EN,  HIGH);  // GC1109 enable
+  delay(2);
   SPI.begin(LORA_SCK, LORA_MISO, LORA_MOSI, LORA_NSS);
   lora.setRfSwitchTable(rfswitch_pins, rfswitch_table);   // drive the TX/RX PA switch
-  int st = lora.begin(RF_FREQ, RF_BW, RF_SF, RF_CR, RF_SYNC, RF_PWR, RF_PRE);
+  // 8-arg begin adds the TCXO voltage. If begin ever fails only after this,
+  // drop RF_TCXO to isolate a TCXO mismatch (7-arg uses RadioLib's 1.6 V default).
+  int st = lora.begin(RF_FREQ, RF_BW, RF_SF, RF_CR, RF_SYNC, RF_PWR, RF_PRE, RF_TCXO);
   if (st != RADIOLIB_ERR_NONE) {
     Serial.print(F("LoRa begin failed, code ")); Serial.println(st);
     loraReady = false;
@@ -64,7 +71,7 @@ void loraInit() {
   }
   lora.setDio2AsRfSwitch(true);          // Heltec uses DIO2 for the TX/RX RF switch
   loraReady = true;
-  Serial.println(F("LoRa ready on 915.0 MHz (V4 FEM enabled)"));
+  Serial.println(F("LoRa ready on 915.0 MHz (V4 FEM fully powered)"));
 }
 
 // Transmit one record. Called from loop() alongside the Serial.println.
