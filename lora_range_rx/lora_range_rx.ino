@@ -20,9 +20,9 @@
 #define LORA_MOSI  10
 
 #define RF_FREQ    915.0
-#define RF_BW      62.5
+#define RF_BW      125.0
 #define RF_SF       12
-#define RF_CR       8
+#define RF_CR       7
 #define RF_SYNC    0x12
 #define RF_PWR      22     // TX-only; kept matching the TX for consistency
 #define RF_PRE      8
