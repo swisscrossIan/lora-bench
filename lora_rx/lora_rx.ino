@@ -57,8 +57,8 @@ void setup() {
   Serial.begin(115200);
   delay(300);
   Serial.println(F("\nlora_rx starting..."));
-  pinMode(FEM_PWR, OUTPUT); digitalWrite(FEM_PWR, LOW);   // GC1109 master power, ACTIVE-LOW (LOW = powered)
-  pinMode(FEM_EN,  OUTPUT); digitalWrite(FEM_EN,  HIGH);   // GC1109 enable
+  pinMode(FEM_PWR, OUTPUT); digitalWrite(FEM_PWR, HIGH);   // GC1109 master LDO power — HIGH (per Meshtastic/MeshCore GC1109_PA)
+  pinMode(FEM_EN,  OUTPUT); digitalWrite(FEM_EN,  HIGH);   // GC1109 CSD enable
   delay(2);
   SPI.begin(LORA_SCK, LORA_MISO, LORA_MOSI, LORA_NSS);
   radio.setRfSwitchTable(rfswitch_pins, rfswitch_table);   // drive the TX/RX PA switch
