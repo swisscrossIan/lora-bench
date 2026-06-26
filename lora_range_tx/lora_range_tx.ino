@@ -53,8 +53,8 @@ void setup() {
   delay(300);
   Serial.println(F("\nlora_range_tx (Heltec V4)..."));
 
-  pinMode(FEM_PWR, OUTPUT); digitalWrite(FEM_PWR, LOW);
-  pinMode(FEM_EN,  OUTPUT); digitalWrite(FEM_EN,  HIGH);
+  pinMode(FEM_PWR, OUTPUT); digitalWrite(FEM_PWR, HIGH);  // GC1109 master LDO power — HIGH (per Meshtastic/MeshCore GC1109_PA)
+  pinMode(FEM_EN,  OUTPUT); digitalWrite(FEM_EN,  HIGH);  // GC1109 CSD enable
   delay(2);
 
   SPI.begin(LORA_SCK, LORA_MISO, LORA_MOSI, LORA_NSS);
