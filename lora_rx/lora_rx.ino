@@ -21,9 +21,9 @@
 
 // Shared radio params — keep identical to lora_radio.ino (US 915 band).
 #define RF_FREQ    915.0
-#define RF_BW      62.5
+#define RF_BW      125.0
 #define RF_SF       12     // must match the tag (lora_radio.ino)
-#define RF_CR       8
+#define RF_CR       7
 #define RF_SYNC    0x12
 #define RF_PWR      22     // TX-only; kept matching the tag for consistency
 #define RF_PRE      8
